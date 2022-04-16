@@ -1,6 +1,9 @@
 import pandas as pd
-df_extrato = pd.read_excel("extrato.xls", engine="xlrd")
+
 df_cadastro = pd.read_excel("cadastro.xls", engine="xlrd")
+df_extrato = pd.read_excel("extrato.xls", engine="xlrd")
+#print(df_cadastro)
+#print(df_extrato)
 
 EXTRATO_SIZE = df_extrato.shape[0]
 
@@ -19,11 +22,12 @@ cnpj = []
 ind_irrf = []
 
 for i in range(EXTRATO_SIZE):
-    if df_extrato.loc[i,"Tipo"] == "RECEITA":
-        data_lancamento.append(df_extrato.loc[i,"Dt. de Pagamento"])
+    if df_extrato.loc[i, "Tipo"] == "RECEITA":
+        data_lancamento.append(df_extrato.loc[i, "Dt. de Pagamento"])
         cod_rendimento.append("R01.001.001")
         cod_ocupacao.append("255")
-        valor_recebido.append(str(df_extrato.loc[i,"Valor Pago (R$)"]).replace(".",","))
+        valor_recebido.append(
+            str(df_extrato.loc[i, "Valor Pago (R$)"]).replace(".", ","))
         valor_deducao.append("0,00")
         historico.append("Consulta")
         ind_recebido_de.append("PF")
@@ -31,12 +35,14 @@ for i in range(EXTRATO_SIZE):
         ind_irrf.append("")
 
         # generating a cadastro dataframe that contains the same name from extrato dataframe
-        df_cadastro_query = df_cadastro[df_cadastro.loc[:, "Nome Completo"] == df_extrato.loc[i, "Descrição"]]        
-        cpf = str(df_cadastro_query["CPF"].values[0])
+        df_cadastro_query = df_cadastro[df_cadastro.loc[:, "Nome Completo"] == df_extrato.loc[i, "Descrição"]]
+        if df_cadastro_query.empty:
+            cpf = ""
+        else:
+            cpf = str(df_cadastro_query["CPF"].values[0])
+            cpf = cpf.replace(".", "").replace("-", "")
         # purging "." and "-" from cpf string and appending on cpf list
-        cpf = cpf.replace(".", "").replace("-", "")
         cpf_titular.append(cpf)
-
 
 # substituting cpf = "nan" for ""
 cpf_titular = ["" if cpf == "nan" else cpf for cpf in cpf_titular]
@@ -63,7 +69,7 @@ escrituracao = {
     "CPF do titular pagamento": cpf_titular,
     "CPF do beneficiário serviço": cpf_beneficiario,
     'Indicador "CPF não informado"': ind_cpf_nao_informado,
-    "CNPJ":cnpj,
+    "CNPJ": cnpj,
     "Indicador de IRRF": ind_irrf
 }
 
