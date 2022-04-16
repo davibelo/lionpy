@@ -49,7 +49,11 @@ for i in range(EXTRATO_SIZE):
 
 
 # substituting cpf = "nan" for ""
-cpf_titular = ["" if cpf == "nan" else cpf for cpf in cpf_titular]
+for cpf in cpf_titular:
+    if cpf =="nan":
+        print("some CPFs are missing...")
+        print("not possible to generate escrituracao...")
+        exit()
 
 # mounting dict with lists information
 escrituracao = {
