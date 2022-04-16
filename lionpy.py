@@ -31,8 +31,6 @@ for i in range(EXTRATO_SIZE):
         valor_deducao.append("0,00")
         historico.append("Consulta")
         ind_recebido_de.append("PF")
-        cnpj.append("")
-        ind_irrf.append("")
 
         # generating a cadastro dataframe that contains the same name from extrato dataframe
         df_cadastro_query = df_cadastro[df_cadastro.loc[:, "Nome Completo"] == df_extrato.loc[i, "Descrição"]]
@@ -43,6 +41,10 @@ for i in range(EXTRATO_SIZE):
             cpf = cpf.replace(".", "").replace("-", "")
         # purging "." and "-" from cpf string and appending on cpf list
         cpf_titular.append(cpf)
+
+        cnpj.append("")
+        ind_irrf.append("N")
+
 
 # substituting cpf = "nan" for ""
 cpf_titular = ["" if cpf == "nan" else cpf for cpf in cpf_titular]
