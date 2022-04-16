@@ -31,20 +31,25 @@ for i in range(EXTRATO_SIZE):
         ind_irrf.append("")
 
         # generating a cadastro dataframe that contains the same name from extrato dataframe
-        df_cadastro_query = df_cadastro[df_cadastro.loc[:, "Nome Completo"] == df_extrato.loc[i, "Descrição"]]
+        df_cadastro_query = df_cadastro[df_cadastro.loc[:, "Nome Completo"] == df_extrato.loc[i, "Descrição"]]        
         cpf = str(df_cadastro_query["CPF"].values[0])
         # purging "." and "-" from cpf string and appending on cpf list
         cpf = cpf.replace(".", "").replace("-", "")
         cpf_titular.append(cpf)
-        ind_cpf_nao_informado.append("")
 
-#FIXIT: some rows contains nan when supposed to be ""
-for cpf in cpf_titular:    
-    if cpf == "nan":
-        cpf = " "
-    print(cpf)
 
+# substituting cpf = "nan" for ""
+cpf_titular = ["" if cpf == "nan" else cpf for cpf in cpf_titular]
+
+# copying cpf_titular to beneficiario
 cpf_beneficiario = cpf_titular
+
+# mounting ind_cpf_nao_informado list
+for cpf in cpf_titular:
+    if cpf == "":
+        ind_cpf_nao_informado.append("S")
+    else:
+        ind_cpf_nao_informado.append("")
 
 # mounting dict with lists information
 escrituracao = {
@@ -62,5 +67,8 @@ escrituracao = {
     "Indicador de IRRF": ind_irrf
 }
 
+# mounting dataframe from dict
 df_escrituracao = pd.DataFrame.from_dict(escrituracao)
+
+# exporting dateframe as csv
 df_escrituracao.to_csv("escrituracao.csv", index=False)
