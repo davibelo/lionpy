@@ -17,7 +17,7 @@ historico = []
 ind_recebido_de = []
 cpf_titular = []
 cpf_beneficiario = []
-ind_cpf_nao_informado = []
+ind_cpf_benef_nao_informado = []
 cnpj = []
 ind_irrf = []
 
@@ -42,22 +42,14 @@ for i in range(EXTRATO_SIZE):
         # purging "." and "-" from cpf string and appending on cpf list
         cpf_titular.append(cpf)
 
+        cpf_beneficiario = ""
+        ind_cpf_benef_nao_informado.append("S")
         cnpj.append("")
-        ind_irrf.append("N")
+        ind_irrf.append("")
 
 
 # substituting cpf = "nan" for ""
 cpf_titular = ["" if cpf == "nan" else cpf for cpf in cpf_titular]
-
-# copying cpf_titular to beneficiario
-cpf_beneficiario = cpf_titular
-
-# mounting ind_cpf_nao_informado list
-for cpf in cpf_titular:
-    if cpf == "":
-        ind_cpf_nao_informado.append("S")
-    else:
-        ind_cpf_nao_informado.append("")
 
 # mounting dict with lists information
 escrituracao = {
@@ -70,7 +62,7 @@ escrituracao = {
     'Indicador "recebido de"': ind_recebido_de,
     "CPF do titular pagamento": cpf_titular,
     "CPF do beneficiário serviço": cpf_beneficiario,
-    'Indicador "CPF não informado"': ind_cpf_nao_informado,
+    'Indicador "CPF não informado"': ind_cpf_benef_nao_informado,
     "CNPJ": cnpj,
     "Indicador de IRRF": ind_irrf
 }
