@@ -1,7 +1,7 @@
 import pandas as pd
 
-df_cadastro = pd.read_excel("cadastro.xls", engine="xlrd")
-df_extrato = pd.read_excel("extrato.xls", engine="xlrd")
+df_cadastro = pd.read_excel("cadastro.xlsx",engine="openpyxl")
+df_extrato = pd.read_excel("extrato.xlsx", engine="openpyxl")
 #print(df_cadastro)
 #print(df_extrato)
 
