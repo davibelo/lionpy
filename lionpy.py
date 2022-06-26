@@ -79,4 +79,4 @@ escrituracao = {
 df_escrituracao = pd.DataFrame.from_dict(escrituracao)
 
 # exporting dateframe as csv
-df_escrituracao.to_csv("escrituracao.csv", sep=";", index=False, header=False)
+df_escrituracao.to_csv("escrituracao_receitas.csv", sep=";", index=False, header=False)
