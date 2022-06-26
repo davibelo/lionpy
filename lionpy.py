@@ -21,6 +21,9 @@ ind_cpf_benef_nao_informado = []
 cnpj = []
 ind_irrf = []
 
+# list of cpf missing on cadastro
+cpf_missing = []
+
 for i in range(EXTRATO_SIZE):
     if df_extrato.loc[i, "Tipo"] == "RECEITA":
         data_lancamento.append(df_extrato.loc[i, "Dt. de Pagamento"])
@@ -32,28 +35,31 @@ for i in range(EXTRATO_SIZE):
         historico.append("Consulta")
         ind_recebido_de.append("PF")
 
-        # generating a cadastro dataframe that contains the same name from extrato dataframe
+        # generating a cadastro dataframe with one item that contains the same name from extrato dataframe
         df_cadastro_query = df_cadastro[df_cadastro.loc[:, "Nome Completo"] == df_extrato.loc[i, "Descrição"]]
         if df_cadastro_query.empty:
             cpf = ""
+            cpf_missing.append(df_extrato.loc[i, "Descrição"])
         else:
             cpf = str(df_cadastro_query["CPF"].values[0])
+            # purging "." and "-" from cpf string
             cpf = cpf.replace(".", "").replace("-", "")
-        # purging "." and "-" from cpf string and appending on cpf list
         cpf_titular.append(cpf)
-
         cpf_beneficiario = ""
         ind_cpf_benef_nao_informado.append("S")
         cnpj.append("")
         ind_irrf.append("")
 
 
-# substituting cpf = "nan" for ""
-for cpf in cpf_titular:
-    if cpf =="nan":
-        print("some CPFs are missing...")
-        print("not possible to generate escrituracao...")
-        exit()
+# dropping duplicates on cpf_missing
+cpf_missing = list(set(cpf_missing))
+
+# checking if any cpf is missing
+if len(cpf_missing) != 0:
+    print("some CPFs are missing:")
+    print(cpf_missing)
+    print("not possible to generate escrituracao...")
+    exit()
 
 # mounting dict with lists information
 escrituracao = {
