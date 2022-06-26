@@ -28,7 +28,7 @@ for i in range(EXTRATO_SIZE):
         cod_rendimento.append("R01.001.001")
         cod_ocupacao.append("255")
         valor_recebido.append(
-            str(df_extrato.loc[i, "Valor a Receber (R$)"]).replace(".", ","))
+            str(df_extrato.loc[i, "Valor Pago (R$)"]).replace(".", ","))
         valor_deducao.append("0,00")
         historico.append("Consulta")
         ind_recebido_de.append("PF")
