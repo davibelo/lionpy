@@ -20,8 +20,6 @@ cpf_beneficiario = []
 ind_cpf_benef_nao_informado = []
 cnpj = []
 ind_irrf = []
-
-# list of cpf missing on cadastro
 cpf_missing = []
 
 for i in range(EXTRATO_SIZE):
